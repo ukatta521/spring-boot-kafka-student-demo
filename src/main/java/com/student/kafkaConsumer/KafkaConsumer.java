@@ -19,25 +19,25 @@ import java.util.Arrays;
 @Component
 public class KafkaConsumer {
 
-    @KafkaListener(topics = "quickstartEvents")
+  /*  @KafkaListener(topics = "quickstartEvents")
     public void consumeMessage(String message){
         System.out.println("Consumed Message ==== " + message);
     }
 
-    //    @Autowired
-    //    public void wordCount(StreamsBuilder builder){
-    //
-    //        KStream<String, String> textLines = builder.stream("streams-plaintext-input");
-    //        System.out.println("text Lines == "+ textLines);
-    //        KTable<String, Long> wordCounts = textLines
-    //                .flatMapValues(textLine -> Arrays.asList(textLine.toLowerCase().split("\\W")))
-    //                        .groupBy((key, word) -> word)
-    //                .count(Materialized.as("counts-store"));
-    //        wordCounts.toStream().to("wordCountsWithTopic", Produced.with(Serdes.String(), Serdes.Long()));
-    //
-    //     //   KafkaStreams streams = new KafkaStreams(builder.build(), props);
-    //      //  streams.start();
-    //
-    //        System.out.println();
-    //    }
+        @Autowired
+        public void wordCount(StreamsBuilder builder){
+
+            KStream<String, String> textLines = builder.stream("streams-plaintext-input");
+            System.out.println("text Lines == "+ textLines);
+            KTable<String, Long> wordCounts = textLines
+                    .flatMapValues(textLine -> Arrays.asList(textLine.toLowerCase().split("\\W")))
+                            .groupBy((key, word) -> word)
+                    .count(Materialized.as("counts-store"));
+            wordCounts.toStream().to("wordCountsWithTopic", Produced.with(Serdes.String(), Serdes.Long()));
+
+         //   KafkaStreams streams = new KafkaStreams(builder.build(), props);
+          //  streams.start();
+
+            System.out.println();
+        }*/
 }

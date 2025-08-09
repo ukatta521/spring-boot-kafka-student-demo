@@ -13,7 +13,7 @@ import java.util.Arrays;
 @Component
 public class Processor {
 
-    @Autowired
+/*    @Autowired
     public void process(StreamsBuilder builder){
         final Serde<Integer> integerSerde = Serdes.Integer();
         final Serde<String> stringSerde = Serdes.String();
@@ -28,4 +28,5 @@ public class Processor {
         System.out.println("wordCounts -- "+ wordCounts);
         wordCounts.toStream().to("streams-wordcount-output", Produced.with(stringSerde, longSerde));
     }
+*/
 }

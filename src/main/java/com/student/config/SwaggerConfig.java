@@ -1,4 +1,4 @@
-package com.student;
+package com.student.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -12,7 +12,7 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Student API")
+                        .title("Spring boot- Kafka- Student- Demo API")
                         .version("1.0")
                         .description("Description of your API"));
     }
