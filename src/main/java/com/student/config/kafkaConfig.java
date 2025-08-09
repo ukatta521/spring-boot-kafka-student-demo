@@ -1,4 +1,4 @@
-package com.student;
+package com.student.config;
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,8 +15,8 @@ import java.util.Map;
 import static org.apache.kafka.streams.StreamsConfig.*;
 
 @Configuration
-@EnableKafka
-@EnableKafkaStreams
+//@EnableKafka
+//@EnableKafkaStreams
 public class kafkaConfig {
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
