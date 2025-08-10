@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentMap;
 
 @RestController
 public class CacheController {
@@ -29,9 +32,16 @@ public class CacheController {
     }
 
     @RequestMapping(value = "/getCacheEntries" , method =  RequestMethod.GET)
-    public String getCacheEntries(String cacheName) {
-        Cache cache = cacheManager.getCache(cacheName);
-        return  cache.toString();
+    public Map<Object, Object> getCacheEntries(String cacheName) {
+        Map<Object, Object> result = new HashMap<>();
+        com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache = getNativeCache(cacheName);
+        if (nativeCache != null) {
+            ConcurrentMap<Object, Object> entries = nativeCache.asMap();
+            // Copy all entries to our result map
+            result.putAll(entries);
+        }
+
+        return result;
     }
 
     @RequestMapping(value = "/getEntryByKey" , method = RequestMethod.GET)
@@ -39,10 +49,30 @@ public class CacheController {
         return (List<Student>) cacheManager.getCache(cacheName).get(key).get();
     }
 
-    @RequestMapping(value = "/getCaffieneCaches", method = RequestMethod.GET)
-    public Cache getCaffineCaches(String cacheName) {
-        return caffeineCacheManager.getCache(cacheName);
+    @RequestMapping(value = "/getCacheSizes", method = RequestMethod.GET)
+    public Map<String, Integer> getCacheSizes() {
+        Map<String, Integer> cacheSizes = new HashMap<>();
+        Collection<String> cacheNames = getAllCaches();
+
+        for (String cacheName : cacheNames) {
+            cacheSizes.put(cacheName, 0);
+            com.github.benmanes.caffeine.cache.Cache<Object, Object> nativeCache = getNativeCache(cacheName);
+            if (nativeCache != null) {
+                ConcurrentMap<Object, Object> entries = nativeCache.asMap();
+                cacheSizes.put(cacheName, entries.size());
+            }
+        }
+
+        return cacheSizes;
     }
 
+    private com.github.benmanes.caffeine.cache.Cache<Object, Object> getNativeCache(String cacheName) {
+        Cache cache = cacheManager.getCache(cacheName);
+        if (cache != null && cache.getNativeCache() instanceof com.github.benmanes.caffeine.cache.Cache) {
+            return (com.github.benmanes.caffeine.cache.Cache<Object, Object>) cache.getNativeCache();
+        }
+
+        return null;
+    }
 
 }
